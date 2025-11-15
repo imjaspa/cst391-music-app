@@ -48,7 +48,7 @@ export default function Page() {
   return (
     <main className="container mt-4">
       {/* UNCOMMENT THESE WHEN YOU ARE READY */}
-      {/* <NavBar /> */}
+      <NavBar />
 
       {/* <SearchAlbum
         updateSearchResults={updateSearchResults}
