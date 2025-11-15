@@ -9,13 +9,13 @@ interface AlbumListProps {
 }
 
 export default function AlbumList({ albumList, onClick }: AlbumListProps) {
-  const albums = albumList.map((album) => (
-    <AlbumCard
-      key={album.id}
-      album={album}
-      onClick={onClick}
-    />
-  ));
-
-  return <div className="container">{albums}</div>;
+  return (
+    <div className="row">
+      {albumList.map((album) => (
+        <div key={album.id} className="col-md-4 mb-4">
+          <AlbumCard album={album} onClick={onClick} />
+        </div>
+      ))}
+    </div>
+  );
 }

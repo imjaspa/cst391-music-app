@@ -7,6 +7,8 @@ import NavBar from "./components/NavBar"
 import SearchAlbum from "./components/SearchAlbum"
 import { get } from "@/lib/apiClient";
 import AlbumCard from "./components/AlbumCard";
+import AlbumList from "./components/AlbumList";
+
 
 export default function Page() {
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -71,10 +73,11 @@ export default function Page() {
       <h1>Jason Pachecos Album List</h1> 
 
       {albumList.length > 0 && (
-        <div className="mt-4">
-          <AlbumCard album={albumList[0]} onClick={() => console.log("clicked album", albumList[0].id)} />
-        </div>
-      )}
+        <AlbumList
+          albumList={albumList}
+          onClick={(album, uri) => updateSingleAlbum(album.id, uri)}
+        />
+      )} 
 
       <p>This JSON data is rendered from the Next.js API.</p>
 
