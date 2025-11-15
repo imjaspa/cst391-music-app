@@ -5,6 +5,8 @@ export interface Album {
   year: number;
   image: string;
   description: string;
+
+  tracks: Track[];
 }
 
 export interface Track {
@@ -15,6 +17,7 @@ export interface Track {
   video_url: string | null;
   lyrics: string | null;
 }
+
 
 export interface Playlist {
   id: number;
