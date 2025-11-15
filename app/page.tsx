@@ -5,21 +5,32 @@ import { useRouter } from "next/navigation";
 import { Album } from "@/lib/types";
 import NavBar from "./components/NavBar" 
 import SearchAlbum from "./components/SearchAlbum"
-// You will later add: import AlbumCard from "./components/AlbumCard";
+import { get } from "@/lib/apiClient";
+import AlbumCard from "./components/AlbumCard";
 
 export default function Page() {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [albumList, setAlbumList] = useState<Album[]>([]);
   const [currentlySelectedAlbumId, setCurrentlySelectedAlbumId] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+
 
   const router = useRouter();
 
-  // Load albums from your own Next.js API
   const loadAlbums = async () => {
-    const response = await fetch("/api/albums");
-    const data = await response.json();
-    setAlbumList(data);
-  };
+    try {
+      const data = await get<Album[]>("/albums");   
+      setAlbumList(data);
+      setError(null);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+    } 
+  }; 
+ 
 
   useEffect(() => {
     loadAlbums();
@@ -47,7 +58,6 @@ export default function Page() {
 
   return (
     <main className="container mt-4">
-      {/* UNCOMMENT THESE WHEN YOU ARE READY */}
       <NavBar />
 
       {/* <SearchAlbum
@@ -59,8 +69,28 @@ export default function Page() {
       /> */}
 
       <h1>Jason Pachecos Album List</h1> 
+
+      {albumList.length > 0 && (
+        <div className="mt-4">
+          <AlbumCard album={albumList[0]} onClick={() => console.log("clicked album", albumList[0].id)} />
+        </div>
+      )}
+
       <p>This JSON data is rendered from the Next.js API.</p>
 
+      {error ? (
+      <pre
+        style={{
+          backgroundColor: "#fee",
+          color: "#900",
+          padding: "1rem",
+          borderRadius: "8px",
+          fontSize: "1rem",
+        }}
+      >
+        {error}
+      </pre>
+    ) : (
       <pre
         style={{
           backgroundColor: "#f4f4f4",
@@ -74,6 +104,8 @@ export default function Page() {
       >
         {albumList.length > 0 && JSON.stringify(albumList, null, 2)}
       </pre>
+    )}
+ 
 
       {albumList.length === 0 && <p>Loading albums...</p>}
     </main>
