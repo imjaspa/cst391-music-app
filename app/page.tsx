@@ -43,10 +43,9 @@ export default function Page() {
   };
 
   const updateSingleAlbum = (albumId: number, uri: string) => {
-    const indexNumber = albumList.findIndex((a) => a.id === albumId);
-    setCurrentlySelectedAlbumId(indexNumber);
-    router.push(`${uri}${indexNumber}`);
-  };
+      router.push(`${uri}${albumId}`);
+    };
+ 
 
   const renderedList = albumList.filter((album) => {
     if (
@@ -62,13 +61,14 @@ export default function Page() {
     <main className="container mt-4">
       <NavBar />
 
-      {/* <SearchAlbum
-        updateSearchResults={updateSearchResults}
-        albumList={renderedList}
-        updateSingleAlbum={(albumId) =>
-          updateSingleAlbum(albumId, "/show/")
-        }
-      /> */}
+      <SearchAlbum
+  updateSearchResults={updateSearchResults}
+  albumList={renderedList}
+  updateSingleAlbum={(album) =>
+    updateSingleAlbum(album.id, "/show/")
+  }
+/>
+ 
 
       <h1>Jason Pachecos Album List</h1> 
 
